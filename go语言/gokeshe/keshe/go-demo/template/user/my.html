@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户中心</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        /* 样式表 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header {
+            background-color: #4682B4;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+
+    <h1>用户中心</h1>
+
+    <ul>
+         <li>ID: {{ .id }}</li>
+             <li>Username: {{ .username }}</li>
+         <li>Mobile: {{ .Mobile }}</li>
+    </ul>
+
+    <a href="#" onclick="GobackIndex()">返回首页</a>
+        <script>
+            function GobackIndex() {
+                // 获取当前页面的 URL
+                var currentUrl = window.location.href;
+                // 在末尾增加 "/index"
+                var targetUrl = currentUrl + '/index';
+                // 跳转到新的 URL
+                window.location.href = targetUrl;
+            }
+        </script>
+    </li>
+</header>
+</body>
+<footer>
+    <p>&copy; 2024 电商服务</p>
+</footer>
+</html>

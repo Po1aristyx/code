@@ -1,0 +1,5 @@
+﻿  1.cpp
+D:\code111\test3\test3\1.cpp(47,31): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+D:\code111\test3\test3\1.cpp(64,23): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+D:\code111\test3\test3\1.cpp(81,31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  test3.vcxproj -> D:\code111\test3\x64\Debug\test3.exe

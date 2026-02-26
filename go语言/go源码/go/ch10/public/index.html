@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语单词消消乐</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f9fc;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4a6fa5;
+            margin-bottom: 30px;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #e6f2ff;
+            border-radius: 5px;
+        }
+        
+        .game-area {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .column {
+            width: 23%;
+            min-height: 400px;
+            border: 2px solid #d9e6f2;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f8fafd;
+            position: relative;
+        }
+        
+        .column-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4a6fa5;
+        }
+        
+        .word {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background-color: white;
+            border: 1px solid #d9e6f2;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .word:hover {
+            background-color: #e6f2ff;
+            transform: translateY(-2px);
+        }
+        
+        .word.selected {
+            background-color: #cce0ff;
+            border-color: #4a6fa5;
+        }
+        
+        .word.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .word.wrong {
+            animation: shake 0.5s;
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .correct-area .word {
+            margin-bottom: 30px;
+        }
+        
+        .pos-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .pos-box {
+            width: 48%;
+            min-height: 100px;
+            border: 2px dashed #d9e6f2;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f0f7ff;
+        }
+        
+        .pos-box.highlight {
+            border-color: #28a745;
+            background-color: #e8f5e9;
+        }
+        
+        .pos-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4a6fa5;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3a5a80;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-label {
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .file-label:hover {
+            background-color: #5a6268;
+        }
+        
+        /* 烟花效果 */
+        .firework-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+            animation: explode 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .highlight-column {
+            border-color: #4a6fa5;
+            background-color: #e6f2ff;
+        }
+        /* 匹配阶段中文区高亮 */
+        .highlight-column {
+            border-color: #4a6fa5;
+            background-color: #e6f2ff;
+        }
+
+        /* 分类阶段词性框绿色高亮 */
+        .pos-box.highlight {
+            border-color: #28a745;
+            background-color: #e8f5e9;
+        }
+        
+        /* 烟花效果 */
+        .firework-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+            animation: explode 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        /* 烟花隐藏 */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>英语单词消消乐</h1>
+        
+        <div class="status-bar">
+            <div id="game-stage">当前阶段: 单词匹配</div>
+            <div id="remaining-words">剩余单词: 0</div>
+        </div>
+        
+        <div class="controls">
+            <label for="excel-file" class="file-label">导入Excel文件</label>
+            <input type="file" id="excel-file" class="file-input" accept=".xlsx, .xls">
+            <button id="restart-btn" disabled>重新开始</button>
+        </div>
+        
+        <div class="game-area">
+            <div class="column english-column">
+                <div class="column-title">英文单词</div>
+                <div id="english-words"></div>
+            </div>
+            
+            <div class="column chinese-column highlight-column">
+                <div class="column-title">中文意思</div>
+                <div id="chinese-words"></div>
+            </div>
+            
+            <div class="column correct-area">
+                <div class="column-title">正确匹配区</div>
+                <div id="matched-pairs"></div>
+            </div>
+            
+            <div class="column pos-area hidden">
+                <div class="column-title">词性分类区</div>
+                <div id="pos-boxes"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="firework-container" class="firework-container hidden"></div>
+    
+    <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+    <audio id="complete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        // 游戏状态
+        const gameState = {
+            words: [],         // 存储原始数据
+            englishWords: [],  // 当前可选的英文单词
+            chineseWords: [],  // 当前可选的中文单词
+            matchedPairs: [],  // 已匹配的对
+            selectedEnglish: null,
+            selectedChinese: null,
+            currentStage: 'matching', // 'matching' or 'classification'
+            posCategories: {
+                'v.': '动词',
+                'n.': '名词',
+                'adj.': '形容词',
+                'adv.': '副词',
+                'prep.': '介词',
+                'conj.': '连词',
+                'pron.': '代词'
+            }
+        };
+        
+        // DOM元素
+        const elements = {
+            englishWords: document.getElementById('english-words'),
+            chineseWords: document.getElementById('chinese-words'),
+            matchedPairs: document.getElementById('matched-pairs'),
+            posBoxes: document.getElementById('pos-boxes'),
+            gameStage: document.getElementById('game-stage'),
+            remainingWords: document.getElementById('remaining-words'),
+            fileInput: document.getElementById('excel-file'),
+            restartBtn: document.getElementById('restart-btn'),
+            fireworkContainer: document.getElementById('firework-container'),
+            correctSound: document.getElementById('correct-sound'),
+            wrongSound: document.getElementById('wrong-sound'),
+            completeSound: document.getElementById('complete-sound'),
+            englishColumn: document.querySelector('.english-column'),
+            chineseColumn: document.querySelector('.chinese-column'),
+            posArea: document.querySelector('.pos-area')
+        };
+        
+        // 初始化游戏
+        function initGame() {
+            // 重置游戏状态
+            gameState.words = [];
+            gameState.englishWords = [];
+            gameState.chineseWords = [];
+            gameState.matchedPairs = [];
+            gameState.selectedEnglish = null;
+            gameState.selectedChinese = null;
+            gameState.currentStage = 'matching';
+            
+            // 清空DOM
+            elements.englishWords.innerHTML = '';
+            elements.chineseWords.innerHTML = '';
+            elements.matchedPairs.innerHTML = '';
+            elements.posBoxes.innerHTML = '';
+            
+            // 更新UI
+            updateUI();
+            
+            // 隐藏词性分类区
+            elements.posArea.classList.add('hidden');
+            elements.chineseColumn.classList.add('highlight-column');
+            elements.englishColumn.classList.remove('highlight-column');
+            
+            // 禁用重新开始按钮
+            elements.restartBtn.disabled = true;
+        }
+        
+        // 更新UI
+        function updateUI() {
+            elements.gameStage.textContent = `当前阶段: ${gameState.currentStage === 'matching' ? '单词匹配' : '词性分类'}`;
+            elements.remainingWords.textContent = `剩余单词: ${gameState.englishWords.length}`;
+        }
+        
+        // 处理Excel文件导入
+        elements.fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                    
+                    // 检查数据格式
+                    if (jsonData.length === 0) {
+                        alert("Excel文件中没有数据！");
+                        return;
+                    }
+                    
+                    // 初始化游戏数据
+                    initGame();
+                    
+                    // 保存原始数据（兼容不同列名格式）
+                    gameState.words = jsonData.map(item => {
+                        // 自动检测列名（不区分大小写）
+                        const keys = Object.keys(item);
+                        let englishKey = keys.find(k => k.toLowerCase().includes('english') || k.toLowerCase().includes('英文'));
+                        let chineseKey = keys.find(k => k.toLowerCase().includes('chinese') || k.toLowerCase().includes('中文'));
+                        let posKey = keys.find(k => k.toLowerCase().includes('pos') || k.toLowerCase().includes('词性'));
+                        
+                        // 默认取前三列
+                        if (!englishKey || !chineseKey || !posKey) {
+                            englishKey = keys[0];
+                            chineseKey = keys[1];
+                            posKey = keys[2];
+                        }
+                        
+                        return {
+                            english: String(item[englishKey] || '').trim(),
+                            chinese: String(item[chineseKey] || '').trim(),
+                            pos: String(item[posKey] || '').trim()
+                        };
+                    }).filter(item => item.english && item.chinese); // 过滤空数据
+                    
+                    if (gameState.words.length === 0) {
+                        alert("没有找到有效的单词数据！请确保Excel包含英文、中文和词性三列数据。");
+                        return;
+                    }
+                    
+                    // 创建英文和中文单词数组
+                    gameState.englishWords = gameState.words.map(item => item.english);
+                    gameState.chineseWords = gameState.words.map(item => item.chinese);
+                    
+                    // 随机排序
+                    shuffleArray(gameState.englishWords);
+                    shuffleArray(gameState.chineseWords);
+                    
+                    // 渲染单词
+                    renderWords();
+                    
+                    // 启用重新开始按钮
+                    elements.restartBtn.disabled = false;
+                    
+                    // 更新UI
+                    updateUI();
+                    
+                } catch (error) {
+                    console.error("Excel解析错误:", error);
+                    alert("Excel文件解析失败，请检查文件格式是否正确！");
+                }
+            };
+            reader.onerror = function() {
+                alert("文件读取失败，请重试！");
+            };
+            reader.readAsArrayBuffer(file);
+        });
+        
+        // 重新开始游戏
+        elements.restartBtn.addEventListener('click', initGame);
+        
+        // 渲染单词
+        function renderWords() {
+            elements.englishWords.innerHTML = '';
+            elements.chineseWords.innerHTML = '';
+            
+            // 渲染英文单词
+            gameState.englishWords.forEach((word, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word english-word';
+                wordElement.textContent = word;
+                wordElement.dataset.index = index;
+                wordElement.addEventListener('click', handleEnglishWordClick);
+                elements.englishWords.appendChild(wordElement);
+            });
+            
+            // 渲染中文单词
+            gameState.chineseWords.forEach((word, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word chinese-word';
+                wordElement.textContent = word;
+                wordElement.dataset.index = index;
+                wordElement.addEventListener('click', handleChineseWordClick);
+                elements.chineseWords.appendChild(wordElement);
+            });
+        }
+        
+        // 处理英文单词点击
+function handleEnglishWordClick(e) {
+    const index = parseInt(e.target.dataset.index);
+    const word = gameState.englishWords[index];
+    
+    // 如果已经匹配过，则忽略
+    if (gameState.matchedPairs.some(pair => pair.english === word)) return;
+    
+    // 清除之前的选择
+    if (gameState.selectedEnglish !== null) {
+        document.querySelectorAll('.english-word').forEach(el => {
+            el.classList.remove('selected');
+        });
+    }
+    
+    // 设置当前选择
+    gameState.selectedEnglish = word;
+    e.target.classList.add('selected');
+    
+    // 如果有中文选择，检查匹配
+    if (gameState.selectedChinese !== null) {
+        checkMatch();
+    }
+}
+
+// 处理中文单词点击
+function handleChineseWordClick(e) {
+    const index = parseInt(e.target.dataset.index);
+    const word = gameState.chineseWords[index];
+    
+    // 如果已经匹配过，则忽略
+    if (gameState.matchedPairs.some(pair => pair.chinese === word)) return;
+    
+    // 清除之前的选择
+    if (gameState.selectedChinese !== null) {
+        document.querySelectorAll('.chinese-word').forEach(el => {
+            el.classList.remove('selected');
+        });
+    }
+    
+    // 设置当前选择
+    gameState.selectedChinese = word;
+    e.target.classList.add('selected');
+    
+    // 如果有英文选择，检查匹配
+    if (gameState.selectedEnglish !== null) {
+        checkMatch();
+    }
+}
+
+// 检查匹配
+function checkMatch() {
+    const isCorrectPair = gameState.words.some(item => 
+        item.english === gameState.selectedEnglish && 
+        item.chinese === gameState.selectedChinese
+    );
+
+    if (isCorrectPair) {
+        // 匹配成功
+        elements.correctSound.play();
+        
+        // 添加到匹配对
+        gameState.matchedPairs.push({
+            english: gameState.selectedEnglish,
+            chinese: gameState.selectedChinese,
+            pos: gameState.words.find(item => 
+                item.english === gameState.selectedEnglish && 
+                item.chinese === gameState.selectedChinese
+            ).pos
+        });
+        
+        // 从待匹配列表中移除
+        const englishIndex = gameState.englishWords.indexOf(gameState.selectedEnglish);
+        const chineseIndex = gameState.chineseWords.indexOf(gameState.selectedChinese);
+        
+        if (englishIndex !== -1) {
+            gameState.englishWords.splice(englishIndex, 1);
+        }
+        
+        if (chineseIndex !== -1) {
+            gameState.chineseWords.splice(chineseIndex, 1);
+        }
+        
+        // 渲染匹配对
+        renderMatchedPair(gameState.selectedEnglish, gameState.selectedChinese);
+        
+        // 清除选择
+        gameState.selectedEnglish = null;
+        gameState.selectedChinese = null;
+        
+        // 检查是否全部匹配完成
+        if (gameState.englishWords.length === 0 && gameState.chineseWords.length === 0) {
+            startClassificationStage();
+        }
+    } else {
+        // 匹配失败
+        elements.wrongSound.play();
+        
+        // 抖动效果
+        document.querySelectorAll('.word.selected').forEach(el => {
+            el.classList.add('wrong');
+            setTimeout(() => {
+                el.classList.remove('wrong');
+            }, 500);
+        });
+        
+        // 清除选择
+        gameState.selectedEnglish = null;
+        gameState.selectedChinese = null;
+        document.querySelectorAll('.word.selected').forEach(el => {
+            el.classList.remove('selected');
+        });
+    }
+    updateUI();
+}
+
+        
+        // 渲染匹配对
+        function renderMatchedPair(english, chinese) {
+            const pairElement = document.createElement('div');
+            
+            const englishElement = document.createElement('div');
+            englishElement.className = 'word correct';
+            englishElement.textContent = english;
+            englishElement.draggable = true;
+            englishElement.addEventListener('dragstart', handleDragStart);
+            
+            const chineseElement = document.createElement('div');
+            chineseElement.className = 'word correct';
+            chineseElement.textContent = chinese;
+            
+            pairElement.appendChild(englishElement);
+            pairElement.appendChild(chineseElement);
+            
+            elements.matchedPairs.appendChild(pairElement);
+        }
+        
+        // 开始词性分类阶段
+        function startClassificationStage() {
+            gameState.currentStage = 'classification';
+            
+            // 更新UI
+            updateUI();
+            
+            // 显示词性分类区
+            elements.posArea.classList.remove('hidden');
+            elements.chineseColumn.classList.remove('highlight-column');
+            elements.englishColumn.classList.add('highlight-column');
+            
+            // 创建词性分类框
+            elements.posBoxes.innerHTML = '';
+            
+            for (const [abbr, full] of Object.entries(gameState.posCategories)) {
+                const posBox = document.createElement('div');
+                posBox.className = 'pos-box';
+                posBox.dataset.pos = abbr;
+                
+                const posTitle = document.createElement('div');
+                posTitle.className = 'pos-title';
+                posTitle.textContent = `${full} (${abbr})`;
+                
+                posBox.appendChild(posTitle);
+                elements.posBoxes.appendChild(posBox);
+                
+                // 添加拖放事件
+                posBox.addEventListener('dragover', allowDrop);
+                posBox.addEventListener('drop', handleDrop);
+            }
+        }
+        
+        // 处理拖拽开始
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.textContent);
+        }
+        
+        // 允许放置
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+        
+        // 处理放置
+        function handleDrop(e) {
+            e.preventDefault();
+            const englishWord = e.dataTransfer.getData('text/plain');
+            const posBox = e.currentTarget;
+            const pos = posBox.dataset.pos;
+            
+            // 查找单词的词性
+            const wordData = gameState.words.find(item => item.english === englishWord);
+            
+            if (wordData && wordData.pos.includes(pos)) {
+                // 分类正确
+                elements.correctSound.play();
+                
+                // 添加到词性框
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word correct';
+                wordElement.textContent = englishWord;
+                posBox.appendChild(wordElement);
+                
+                // 从匹配区移除
+                const pairElements = document.querySelectorAll('#matched-pairs .word:first-child');
+                for (const el of pairElements) {
+                    if (el.textContent === englishWord) {
+                        el.parentNode.remove();
+                        break;
+                    }
+                }
+                
+                // 检查是否全部完成
+                if (document.querySelectorAll('#matched-pairs .word').length === 0) {
+                    // 游戏完成
+                    gameComplete();
+                }
+            } else {
+                // 分类错误
+                elements.wrongSound.play();
+            }
+        }
+        
+        // 游戏完成
+        function gameComplete() {
+            elements.completeSound.play();
+            showFireworks();
+            
+            setTimeout(() => {
+                alert('恭喜你完成了所有单词的匹配和分类！');
+            }, 2000);
+        }
+        
+        // 显示烟花效果
+        function showFireworks() {
+            elements.fireworkContainer.classList.remove('hidden');
+            
+            // 创建多个烟花
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createFirework();
+                }, i * 200);
+            }
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                elements.fireworkContainer.classList.add('hidden');
+                elements.fireworkContainer.innerHTML = '';
+            }, 3000);
+        }
+        
+        // 创建单个烟花
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            
+            // 随机位置
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            
+            // 随机颜色
+            const hue = Math.floor(Math.random() * 360);
+            firework.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+            firework.style.boxShadow = `0 0 10px 5px hsl(${hue}, 100%, 50%)`;
+            
+            firework.style.left = `${x}px`;
+            firework.style.top = `${y}px`;
+            
+            elements.fireworkContainer.appendChild(firework);
+            
+            // 动画结束后移除
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }
+        
+        // 辅助函数：随机排序数组
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // 初始化游戏
+        initGame();
+    </script>
+</body>
+</html>

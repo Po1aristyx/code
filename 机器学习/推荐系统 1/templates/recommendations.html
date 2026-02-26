@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电影推荐系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .header h1 {
+            color: #1a2a4c;
+            margin: 0;
+        }
+        .user-info a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .user-info a:hover {
+            text-decoration: underline;
+        }
+        .recommendation-form {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .form-group select, .form-group input {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .flash-messages {
+            margin-bottom: 1.5rem;
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+        }
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .movie-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+        .movie-card-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+        }
+        .movie-card h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .movie-card-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .rating-form {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            border-top: 1px solid #e8e8e8;
+            padding-top: 1rem;
+        }
+        .rating-form input[type="number"] {
+            width: 70px;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .rating-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .rating-form button:hover {
+            background-color: #218838;
+        }
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>电影推荐</h1>
+            <div class="user-info">
+                欢迎, <strong>{{ session.username }}</strong>! <a href="{{ url_for('logout') }}">登出</a>
+            </div>
+        </header>
+
+        <!-- Flash 消息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- 推荐算法选择表单 -->
+        <form method="POST" action="{{ url_for('recommendations_page') }}" id="recommendation-form" class="recommendation-form">
+            <div class="form-group">
+                <label for="recommendation_type">选择推荐算法:</label>
+                <select name="recommendation_type" id="recommendation_type">
+                    <option value="top_rated_global">大众热门推荐</option>
+                    <option value="user_cf">基于用户的协同过滤</option>
+                    <option value="item_cf">基于物品的协同过滤</option>
+                    <option value="content_based">基于内容的推荐</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="content-based-inputs" style="display:none;">
+                <label for="liked_movies">输入喜欢的电影 (含逗号的标题请用英文双引号括起):</label>
+                <input type="text" name="liked_movies" id="liked_movies" placeholder='例如: Inception, "Godfather: Part II, The"'>
+            </div>
+
+            <div class="form-group">
+                <label>&nbsp;</label> <!-- 占位 -->
+                <button type="submit">获取推荐</button>
+            </div>
+        </form>
+
+        <h2>为您推荐</h2>
+        <div class="movies-grid">
+            {% for r in recommendations %}
+                <div class="movie-card">
+                    <div class="movie-card-content">
+                        <h3>{{ r.name }}</h3>
+                        <p class="movie-card-meta">
+                            <strong>类型:</strong> {{ r.genre }} <br>
+                            <strong>大众评分:</strong> {{ "%.2f"|format(r.rating) }} | 
+                            <strong>评分人数:</strong> {{ r.members }}
+                        </p>
+                        <form method="POST" action="{{ url_for('rate_movie') }}" class="rating-form">
+                            <input type="hidden" name="movie_id" value="{{ r.movie_id }}">
+                            <label for="rating-{{ r.movie_id }}">您的评分:</label>
+                            <input type="number" name="rating" id="rating-{{ r.movie_id }}" min="1" max="5" required placeholder="1-5">
+                            <button type="submit">提交</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-results">
+                    <p>暂无推荐结果。请尝试其他推荐算法或为更多电影评分。</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const recommendationTypeSelect = document.getElementById('recommendation_type');
+            const contentBasedInputs = document.getElementById('content-based-inputs');
+
+            function toggleInputs() {
+                const selectedType = recommendationTypeSelect.value;
+                if (selectedType === 'content_based') {
+                    contentBasedInputs.style.display = 'block';
+                } else {
+                    contentBasedInputs.style.display = 'none';
+                }
+            }
+
+            toggleInputs();
+            recommendationTypeSelect.addEventListener('change', toggleInputs);
+
+            document.getElementById('recommendation-form').addEventListener('submit', function(event) {
+                const selectedType = recommendationTypeSelect.value;
+                const likedMoviesInput = document.getElementById('liked_movies');
+                if (selectedType === 'content_based' && likedMoviesInput.value.trim() === '') {
+                    alert('进行"基于内容的推荐"时，请输入至少一部电影。');
+                    event.preventDefault(); 
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginWindow</class>
+ <widget class="QWidget" name="LoginWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>学生成绩管理系统 - 登录</string>
+  </property>
+  <widget class="QWidget" name="central_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>100</y>
+     <width>400</width>
+     <height>400</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QWidget {
+    background-color: rgba(255, 255, 255, 200);
+    border-radius: 15px;
+}</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>20</number>
+    </property>
+    <property name="leftMargin">
+     <number>30</number>
+    </property>
+    <property name="topMargin">
+     <number>40</number>
+    </property>
+    <property name="rightMargin">
+     <number>30</number>
+    </property>
+    <property name="bottomMargin">
+     <number>40</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="title_label">
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 20px;
+}</string>
+      </property>
+      <property name="text">
+       <string>学生成绩管理系统</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="type_layout">
+      <property name="spacing">
+       <number>30</number>
+      </property>
+      <item>
+       <widget class="QRadioButton" name="student_radio">
+        <property name="styleSheet">
+         <string notr="true">QRadioButton {
+    font-size: 16px;
+    color: #333333;
+    padding: 5px;
+}
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+}</string>
+        </property>
+        <property name="text">
+         <string>学生登录</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="admin_radio">
+        <property name="styleSheet">
+         <string notr="true">QRadioButton {
+    font-size: 16px;
+    color: #333333;
+    padding: 5px;
+}
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+}</string>
+        </property>
+        <property name="text">
+         <string>管理员登录</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="id_layout">
+      <item>
+       <widget class="QLabel" name="id_label">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16px; color: #333333;</string>
+        </property>
+        <property name="text">
+         <string>学号:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="id_input">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    padding: 10px;
+    border: 2px solid #CCCCCC;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    min-height: 20px;
+}
+QLineEdit:focus {
+    border-color: #4CAF50;
+}</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="name_layout">
+      <item>
+       <widget class="QLabel" name="name_label">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16px; color: #333333;</string>
+        </property>
+        <property name="text">
+         <string>姓名:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="name_input">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    padding: 10px;
+    border: 2px solid #CCCCCC;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    min-height: 20px;
+}
+QLineEdit:focus {
+    border-color: #4CAF50;
+}</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QPushButton" name="login_button">
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    min-width: 200px;
+    margin-top: 20px;
+}
+QPushButton:hover {
+    background-color: #45a049;
+}
+QPushButton:pressed {
+    background-color: #3d8b40;
+}</string>
+      </property>
+      <property name="text">
+       <string>登录</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        label {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input, select {
+            margin-bottom: 12px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 95%;
+        }
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #preferences-container {
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        #preferences-container label {
+            display: block;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <h2>注册新账户</h2>
+
+    <!-- Flash 消息 -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <label for="username">用户名:</label>
+        <input type="text" name="username" id="username" required>
+        <label for="password">密码:</label>
+        <input type="password" name="password" id="password" required>
+        <label for="email">电子邮件:</label>
+        <input type="email" name="email" id="email" required>
+        
+        <label for="preferences">选择您喜爱的电影类型 (可多选):</label>
+        <div id="preferences-container">
+            <label><input type="checkbox" name="preferences" value="Action"> Action</label>
+            <label><input type="checkbox" name="preferences" value="Adventure"> Adventure</label>
+            <label><input type="checkbox" name="preferences" value="Animation"> Animation</label>
+            <label><input type="checkbox" name="preferences" value="Children"> Children</label>
+            <label><input type="checkbox" name="preferences" value="Comedy"> Comedy</label>
+            <label><input type="checkbox" name="preferences" value="Crime"> Crime</label>
+            <label><input type="checkbox" name="preferences" value="Documentary"> Documentary</label>
+            <label><input type="checkbox" name="preferences" value="Drama"> Drama</label>
+            <label><input type="checkbox" name="preferences" value="Fantasy"> Fantasy</label>
+            <label><input type="checkbox" name="preferences" value="Film-Noir"> Film-Noir</label>
+            <label><input type="checkbox" name="preferences" value="Horror"> Horror</label>
+            <label><input type="checkbox" name="preferences" value="IMAX"> IMAX</label>
+            <label><input type="checkbox" name="preferences" value="Musical"> Musical</label>
+            <label><input type="checkbox" name="preferences" value="Mystery"> Mystery</label>
+            <label><input type="checkbox" name="preferences" value="Romance"> Romance</label>
+            <label><input type="checkbox" name="preferences" value="Sci-Fi"> Sci-Fi</label>
+            <label><input type="checkbox" name="preferences" value="Thriller"> Thriller</label>
+            <label><input type="checkbox" name="preferences" value="War"> War</label>
+            <label><input type="checkbox" name="preferences" value="Western"> Western</label>
+        </div>
+        
+        <input type="submit" value="注册">
+    </form>
+    <a href="{{ url_for('login') }}">已有账户？返回登录</a>
+</body>
+</html>

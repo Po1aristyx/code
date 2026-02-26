@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "untitled_keshe",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "UnixPlugProgram::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-UnixPlugProgram-Debug-61d1083adf0dc9b098e1.json",
+					"name" : "UnixPlugProgram",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "caozuo_keshe::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-caozuo_keshe-Debug-c315e9055233f8449b42.json",
+					"name" : "caozuo_keshe",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "untitled_keshe::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-untitled_keshe-Debug-5a5cceb8f441597e4e7d.json",
+					"name" : "untitled_keshe",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/code111/untitled keshe/cmake-build-debug",
+		"source" : "D:/code111/untitled keshe"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

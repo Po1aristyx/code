@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>登录页</title>
+  <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+  <script src="../../static/js/jquery.min.js"></script>
+  <script src="../../static/js/bootstrap.min.js"></script>
+</head>
+<style>
+  .login-block {
+    position: absolute;
+    top: 50%;
+    transform:  translateY(-50%);
+  }
+</style>
+<body style="background:url(../../static/img/background1.jpg) no-repeat center; background-position: center 0; background-size: cover; margin: 0px;">
+<div>
+
+  <form action="/user/login" method="post" >
+    <div class="col-md-4 col-lg-4 col-lg-offset-4 col-md-offset-4 login-block" style="background-color: white; opacity: 0.8; padding: 50px; border-radius: 15px">
+      <h3 style="text-align: center;padding-bottom:20px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 40px">用户登录</h3>
+      <div class="form-group input-group input-group-lg" >
+        <span class="input-group-addon" id="mobile" >手机号码</span>
+        <input type="text" name="Mobile" class="form-control" placeholder="手机号码">
+      </div>
+
+      <div class="form-group input-group input-group-lg">
+        <span class="input-group-addon" id="password" >密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <input type="password" name="Password" class="form-control" placeholder="密码">
+
+      </div>
+      <div class="form-group center-block">
+        <button type="button" id="loginButton" class="btn btn-success center-block" style="width: 80px;height: 40px;font-size: 20px">登 录</button>
+        <a href="/user/register">点击注册</a>
+
+      </div>
+      <a href="/user/password">修改密码</a>
+      <div id="errorBlock" style="display:none;color:red;text-align:center;"></div>
+    </div>
+  </form>
+</div>
+</body>
+<script>
+  $(document).ready(function() {
+    $('#loginButton').click(function() {
+      var mobile = $('input[name="Mobile"]').val();
+      var password = $('input[name="Password"]').val();
+
+      $.ajax({
+        url: '/user/login',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ Mobile: mobile, Password: password }),
+        success: function(response) {
+          if (response.code === 200) {
+            // 登录成功，跳转到用户首页
+            window.location.href = "/user/" + response.data.ID + "/index";
+          } else {
+            // 登录失败，显示错误信息
+            alert(response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          if (xhr.status === 422) {
+            alert("登录失败: " + xhr.responseJSON.msg);
+            // 获取密码输入框元素
+            var oldMobileInput = document.querySelector('input[name="Mobile"]');
+            var oldPasswordInput = document.querySelector('input[name="Password"]');
+            // 清空密码输入框
+            oldMobileInput.value ='';
+            oldPasswordInput.value = '';
+          } else {
+            alert("登录请求失败: " + error);
+          }
+        }
+      });
+    });
+  });
+</script>
+</html>
+

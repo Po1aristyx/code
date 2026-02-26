@@ -1,0 +1,9 @@
+# ninja log v5
+1	1868	7710982729903315	CMakeFiles/untitled_keshe.dir/main.c.obj	54a956160977e03f
+1869	2928	7710982740463724	untitled_keshe.exe	e68904f2100dc6e
+2	801	7710759958710983	CMakeFiles/untitled_keshe.dir/2.c.obj	35a00e1f9416f536
+2	682	7715296237451883	CMakeFiles/UnixPlugProgram.dir/2.c.obj	6b8a4f42428c4045
+1649	3120	7718283913903508	caozuo_keshe.exe	faee7938ef0f3dae
+1	1297	7718298537640659	build.ninja	5f545d92c50f6177
+683	1391	7715296244521776	UnixPlugProgram.exe	a9f2262d7a242a9e
+1	1649	7718283899220280	CMakeFiles/caozuo_keshe.dir/5.c.obj	3673fd8cd892b393

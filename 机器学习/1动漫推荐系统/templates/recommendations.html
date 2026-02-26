@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>推荐动漫</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h2 {
+            color: #333;
+        }
+        .anime-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .anime-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px;
+            width: 280px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .anime-item strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+        .anime-item span {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .anime-item input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 8px;
+        }
+        .anime-item button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .anime-item button:hover {
+            background-color: #0056b3;
+        }
+        .logout-link {
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>推荐的动漫</h2>
+    <ul class="anime-list">
+        {% for anime in recommendations %}
+        <li class="anime-item">
+            <strong>动漫ID:</strong> <span>{{ anime.anime_id }}</span>
+            <strong>名称:</strong> <span>{{ anime.name }}</span>
+            <strong>类型:</strong> <span>{{ anime.genre }}</span>
+            <strong>评分:</strong> <span>{{ anime.rating }}</span>
+            <strong>观看人数:</strong> <span>{{ anime.members }}</span>
+            <input type="number" min="1" max="10" placeholder="评分 (1-10)" id="rating-{{ anime.anime_id }}">
+            <button onclick="rateAnime('{{ anime.anime_id }}')">评分</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('recommendations') }}" class="logout-link">换一批</a><br>
+    <a href="{{ url_for('logout') }}" class="logout-link">登出</a>
+
+    <script>
+        function rateAnime(animeId) {
+            const rating = document.getElementById(`rating-${animeId}`).value;
+            if (rating < 1 || rating > 10) {
+                alert('评分必须在1到10之间');
+                return;
+            }
+            fetch('/rate_anime', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ anime_id: animeId, rating: rating })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('评分成功!');
+                } else {
+                    alert(`评分失败: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                alert(`评分失败: ${error}`);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录页面</title>
+  <style>
+    /* 示例样式 */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 350px; /* 稍微加宽以适应图片 */
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .logo {
+      text-align: center; /* 居中图片 */
+      margin-bottom: 20px; /* 增加一些底部间距 */
+    }
+    label, input {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="submit"] {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <img src="your-image-url.jpg" alt="Logo" width="150" height="150"> <!-- 图片源替换为你自己的图片URL -->
+  </div>
+  <h2>登录</h2>
+  <form action="/login" method="post">
+    <label for="username">用户名:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">密码:</label>
+    <input type="password" id="password" name="password" required>
+
+    <!-- 可以添加其他字段，如验证码等 -->
+
+    <input type="submit" value="登录">
+  </form>
+</div>
+</body>
+</html>

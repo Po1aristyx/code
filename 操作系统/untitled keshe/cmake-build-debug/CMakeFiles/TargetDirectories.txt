@@ -1,0 +1,5 @@
+D:/code111/untitled keshe/cmake-build-debug/CMakeFiles/untitled_keshe.dir
+D:/code111/untitled keshe/cmake-build-debug/CMakeFiles/UnixPlugProgram.dir
+D:/code111/untitled keshe/cmake-build-debug/CMakeFiles/caozuo_keshe.dir
+D:/code111/untitled keshe/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/code111/untitled keshe/cmake-build-debug/CMakeFiles/rebuild_cache.dir

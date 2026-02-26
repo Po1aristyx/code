@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>用户注册</title>
+  <style type="text/css">
+    form#reg {
+      width:700px;
+      font-size: 14px;
+      margin:0 auto;
+    }
+
+    form#reg fieldset {
+      border: dashed 1px gray;
+    }
+
+    form#reg fieldset legend {
+      margin: 10px auto;
+    }
+
+    form#reg div.input-group {
+      width:100%;
+      height:45px;
+      line-height: 45px;
+      border-bottom:solid 1px #E2E2E2;
+    }
+
+    form#reg div.input-group:hover {
+      background-color: #E2E2E2;
+    }
+
+    form#reg div.input-group label {
+      display: inline-block;
+      width:25%;
+      text-align: right;
+      margin-right: 25px;
+    }
+  </style>
+</head>
+
+<body>
+<form id="reg"  action="/upload" method="post" enctype="multipart/form-data">
+  <fieldset id="">
+    <legend>用户注册</legend>
+
+    <!--文本输入框-->
+    <div class="input-group">
+      <label>用户名：</label>
+      <input type="text" value="" name="username" placeholder="请输入6位中文用户名"  />
+    </div>
+
+    <!--文件域-->
+    <div class="input-group">
+      <label>上传照片：</label>
+      <input type="file" name="uploadfile"/>
+    </div>
+
+    <!--提交按钮-->
+    <div class="input-group">
+      <label></label>
+      <input type="reset" value="重置" />
+      <input type="submit" value="注册" />
+    </div>
+  </fieldset>
+</form>
+</body>
+
+</html>

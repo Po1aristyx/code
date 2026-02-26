@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminWindow</class>
+ <widget class="QMainWindow" name="AdminWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>管理员窗口</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_student">
+    <property name="title">
+     <string>学生信息管理</string>
+    </property>
+    <addaction name="action_add_student"/>
+    <addaction name="action_delete_student"/>
+    <addaction name="action_edit_student"/>
+    <addaction name="action_query_student"/>
+   </widget>
+   <widget class="QMenu" name="menu_grade">
+    <property name="title">
+     <string>学生成绩管理</string>
+    </property>
+    <addaction name="action_add_grade"/>
+    <addaction name="action_delete_grade"/>
+    <addaction name="action_edit_grade"/>
+    <addaction name="action_query_grade"/>
+   </widget>
+   <addaction name="menu_student"/>
+   <addaction name="menu_grade"/>
+  </widget>
+  <action name="action_add_student">
+   <property name="text">
+    <string>添加学生信息</string>
+   </property>
+  </action>
+  <action name="action_delete_student">
+   <property name="text">
+    <string>删除学生信息</string>
+   </property>
+  </action>
+  <action name="action_edit_student">
+   <property name="text">
+    <string>修改学生信息</string>
+   </property>
+  </action>
+  <action name="action_query_student">
+   <property name="text">
+    <string>查询学生信息</string>
+   </property>
+  </action>
+  <action name="action_add_grade">
+   <property name="text">
+    <string>添加学生成绩</string>
+   </property>
+  </action>
+  <action name="action_delete_grade">
+   <property name="text">
+    <string>删除学生成绩</string>
+   </property>
+  </action>
+  <action name="action_edit_grade">
+   <property name="text">
+    <string>修改学生成绩</string>
+   </property>
+  </action>
+  <action name="action_query_grade">
+   <property name="text">
+    <string>查询学生成绩</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

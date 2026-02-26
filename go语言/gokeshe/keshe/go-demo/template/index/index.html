@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>淘宝</title>
+
+    <style type="text/css">
+        /* 主页面样式表 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        /* 顶部导航栏样式 */
+        header {
+            background-color: #4682B4;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 商品分类导航样式 */
+        nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+
+
+        footer {
+            background-color: #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-top: 0;
+        }
+
+        a {
+            color: #4682B4;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            border: 1px solid #ccc;
+            padding: 5px;
+            width: 300px;
+        }
+
+        input[type="submit"] {
+            background-color: #4682B4;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>电商服务</h1>
+    <nav>
+        <ul>
+            <li><a href="#" onclick="redirectToUserCenter()">个人中心</a>
+                <script>
+                    function redirectToUserCenter() {
+                        // 获取当前页面的 URL
+                        var currentUrl = window.location.href;
+                        // 移除末尾的 "/index" 部分
+                        var targetUrl = currentUrl.replace('/index', '');
+                        // 跳转到新的 URL
+                        window.location.href = targetUrl;
+                    }
+                </script>
+            </li>
+            <li><a href="#" onclick="redirectToadd_product()">添加商品</a>
+                <script>
+                    function redirectToadd_product() {
+                        // 获取当前页面的 URL
+                        var currentUrl = window.location.href;
+                        // 移除末尾的 "/index" 部分
+                        var targetUrl = currentUrl.replace('/index', '/add_product/');
+                        // 跳转到新的 URL
+                        window.location.href = targetUrl;
+                    }
+                </script>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <script>
+        function GotoGoodsInfo(element) {
+            var goodsid = element.getAttribute('data-goods-id');
+            // 获取当前页面的 URL
+            var currentUrl = window.location.href;
+            // 移除末尾的 "/index" 部分并添加product
+            var targetUrl = currentUrl.replace('/index', '/product/');
+            targetUrl = targetUrl + goodsid;
+            // 跳转到新的 URL
+            window.location.href = targetUrl;
+        }
+
+        /* 商品搜索功能 */
+        function searchGoods() {
+            const keyword = document.getElementById('searchInput').value;
+            // 调用后端搜索接口
+            fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // 更新商品列表
+                    updateGoodsList(data);
+                });
+        }
+
+        /* 更新商品列表DOM */
+        function updateGoodsList(goodsData) {
+            const container = document.getElementById('goodsContainer');
+            // 清空现有内容
+            container.innerHTML = '';
+            
+            // 循环创建商品卡片
+            goodsData.forEach(goods => {
+                const card = createGoodsCard(goods);
+                container.appendChild(card);
+            });
+        }
+    </script>
+    <section>
+        <h2>热门商品</h2>
+        <ul>
+            {{range .}}
+                <li>
+                    <h2>{{.Title}}</h2>
+                    <p>价 格: ¥{{.Price}}</p>
+                    <p>库 存: {{.Stock}}</p>
+                    <img src="/static/img/products/{{.ImageURL}}"
+                         alt="{{.Name}}"
+                         data-goods-id="{{.ID}}"
+                         style="width: 200px; height: auto;"
+                         onclick="GotoGoodsInfo(this)">
+                    <form action="/buy_product" method="post">
+                        <input type="hidden" name="product_id" value="{{.ID}}"/>
+                        <label for="quantity">数 量:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" max="{{.Stock}}" required/>
+                        <button type="submit">购买</button>
+                    </form>
+                </li>
+                {{end}}
+            </ul>
+            </section>
+            </main>
+
+            <footer>
+                <p>&copy; 2024 电商服务</p>
+            </footer>
+            </body>
+            </html>

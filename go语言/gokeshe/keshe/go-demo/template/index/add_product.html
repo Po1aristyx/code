@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>淘宝</title>
+
+    <style type="text/css">
+        /* 样式表 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: #4682B4;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+
+
+        footer {
+            background-color: #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-top: 0;
+        }
+
+        a {
+            color: #4682B4;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            border: 1px solid #ccc;
+            padding: 5px;
+            width: 300px;
+        }
+
+        input[type="submit"] {
+            background-color: #4682B4;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+        }
+    </style>
+    <title>添加商品</title>
+</head>
+<body>
+<header>
+    <h1>电商服务</h1>
+    <nav>
+        <ul>
+            <li>
+                <a href="#" onclick="GobackIndex()">返回首页</a>
+                <script>
+                    function GobackIndex() {
+                        // 获取当前页面的 URL
+                        var currentUrl = window.location.href;
+                        // 移除末尾的 "/product" 及其后面的部分
+                        var targetUrl = currentUrl.replace(/\/add_product.*/, '/index');
+                        // 跳转到新的 URL
+                        window.location.href = targetUrl;
+                    }
+                </script>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h1>添加商品</h1>
+    <form action="/user/:id/add_product" method="post">
+        <label for="title">标  题:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="name">商品名:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="price">价  格:</label>
+        <input type="text" id="price" name="price" required>
+        <br>
+        <label for="details">详  情:</label>
+        <input type="text" id="details" name="details" required>
+        <br>
+        <label for="image_url">图片名称:</label>
+        <input type="text" id="image_url" name="image_url">
+        <br>
+        <label for="stock">库  存:</label>
+        <input type="number" id="stock" name="stock" required>
+        <br>
+        <button type="submit">添加商品</button>
+    </form>
+</main>
+
+
+<footer>
+    <p>&copy; 2024 电商服务</p>
+</footer>
+</body>
+</html>

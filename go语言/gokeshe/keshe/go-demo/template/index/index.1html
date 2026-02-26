@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电商平台核心功能</title>
+    <!-- 引入Bootstrap样式 -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+        /* 身份验证模块样式 */
+        .auth-module {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        /* 商品卡片样式 */
+        .goods-card {
+            transition: transform 0.3s ease;
+            border: 1px solid #eee;
+        }
+        .goods-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 购物车侧边栏 */
+        .cart-sidebar {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">电商平台</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categories">商品分类</a>
+                    </li>
+                </ul>
+                <!-- 用户认证状态 -->
+                <div id="authStatus" class="form-inline my-2 my-lg-0">
+                    <button class="btn btn-outline-primary mr-2" onclick="showLogin()">登录</button>
+                    <button class="btn btn-primary" onclick="showRegister()">注册</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 商品分类导航 -->
+    <section class="container mt-4">
+        <div class="row" id="categoryNav">
+            <!-- 动态加载商品分类 -->
+        </div>
+    </section>
+
+    <!-- 商品搜索 -->
+    <div class="container my-4">
+        <div class="input-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="搜索商品...">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="searchGoods()">搜索</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品展示区 -->
+    <main class="container">
+        <div class="row" id="goodsContainer">
+            <!-- 动态加载商品卡片 -->
+        </div>
+    </main>
+
+    <!-- 购物车侧边栏 -->
+    <aside class="cart-sidebar p-3" id="cartSidebar">
+        <h4>购物车</h4>
+        <div id="cartItems"></div>
+        <div class="total-price mt-3">
+            总计：¥<span id="totalAmount">0.00</span>
+        </div>
+        <button class="btn btn-danger mt-3" onclick="closeCart()">关闭</button>
+        <button class="btn btn-success mt-3" onclick="checkout()">结算</button>
+    </aside>
+
+    <!-- 脚本引入 -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script>
+        // 用户认证功能
+        function showLogin() {
+            // 显示登录模态框
+        }
+
+        function handleLogin() {
+            // 处理登录表单提交
+        }
+
+        // 商品搜索功能
+        function searchGoods() {
+            const keyword = $('#searchInput').val();
+            fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(res => res.json())
+                .then(renderGoodsList);
+        }
+
+        // 购物车功能
+        let cart = [];
+        function addToCart(goodsId) {
+            // 添加商品到购物车
+        }
+
+        function updateCartDisplay() {
+            // 更新购物车显示
+        }
+
+        // 订单功能
+        function checkout() {
+            // 处理订单结算
+        }
+
+        // 初始化加载
+        $(document).ready(function() {
+            // 加载商品分类
+            fetch('/api/categories')
+                .then(res => res.json())
+                .then(renderCategories);
+        });
+    </script>
+<script>
+  // 登录状态检测
+  function checkLoginStatus() {
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    // 模拟登录状态（实际应从cookie获取）
+    const isLogin = localStorage.getItem('isLogin') === 'true';
+    
+    loginBtn.style.display = isLogin ? 'none' : 'block';
+    logoutBtn.style.display = isLogin ? 'block' : 'none';
+  }
+  
+  window.onload = checkLoginStatus;
+</script>
+</body>
+</html>
